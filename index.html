@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!--
+
+	Created by:
+	Jimmy Wärting - http://jimmy.warting.se/
+	Stefan Wärting - http://stefan.warting.se/
+	Please contact any of us if you need help with any development!
+	   ___             _
+	  / __\__  ___  __| |      _ __  _   _
+	 / _\/ _ \/ _ \/ _` |     | '_ \| | | |
+	/ / |  __/  __/ (_| |  _  | | | | |_| |
+	\/   \___|\___|\__,_| (_) |_| |_|\__,_|
+
+-->
+<html lang="en" ng-app="feed" ng-controller="MainCtrl">
+	<head>
+		<title>Feed</title>
+
+		<meta charset="utf-8">
+		<meta id="ee" name="viewport" content="user-scalable=1">
+
+		<link rel="stylesheet" href="/css/main.css">
+		<link rel="stylesheet" href="/css/spectrum.css">
+
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+		<script>window.jQuery  || document.write(unescape('%3Cscript src="/js/jquery-2.0.0.min.js"%3E%3C/script%3E'))</script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.4/angular.min.js"></script>
+		<script>window.angular || document.write(unescape('%3Cscript src="/js/angular-1.1.4.min.js"%3E%3C/script%3E'))</script>
+
+
+		<script src="/js/factory/angular-resource.min.js"></script>
+
+		<script src="/js/angular-mocks.js"></script>
+		<script src="/js/main.js"></script>
+
+		<!-- ============= Config ============= -->
+		<script src="/js/config/route-provider.js"></script>
+
+		<!-- ============= Factory ============= -->
+		<script src="/js/factory/angular-resource.min.js"></script>
+		<script src="/js/factory/feed.nu-mashape.js"></script>
+
+		<!-- ============= Filters ============= -->
+		<script src="/js/filters/map.js"></script>
+		<script src="/js/filters/simple-date-format.js"></script>
+
+		<!-- ============= Service ============= -->
+
+		<!-- ============= Directives ============= -->
+		<script src="/js/directives/if.js"></script>
+		<script src="/js/directives/name.js"></script>
+		<script src="/js/directives/file.js"></script>
+		<script src="/js/directives/buttons.js"></script>
+
+		<!-- ============= Controllers ============= -->
+		<script src="/js/controllers/main-ctrl.js"></script>
+		<script src="/js/controllers/android-ctrl.js"></script>
+		<script src="/js/controllers/settings-ctrl.js"></script>
+		<script src="/js/controllers/news-ctrl.js"></script>
+		<script src="/js/controllers/applications-ctrl.js"></script>
+
+
+		<!-- <script src="/js/html2canvas.min.js"></script> -->
+		<script src="/js/spectrum.js"></script>
+
+	</head>
+	<body>
+
+		<header id="topHeader"><a id="logo" href="/"></a>
+			<nav>
+				<a href="/" ng-class="navClass('/')">News</a>
+				<a ui-if="loggedIn" href="/applications" ng-class="navClass('/applications')">Application</a>
+				<a ui-if="!loggedIn" href="/login" ng-class="navClass('/login')">Login</a>
+				<a ui-if="loggedIn" ng-click="logout()">Logout</a>
+			</nav>
+		</header>
+
+		<ng-view></ng-view>
+
+		<div id="loading" aria-hidden="{{isLoading()}}">
+			<div class="content">Loading</div>
+		</div>
+
+	</body>
+</html>

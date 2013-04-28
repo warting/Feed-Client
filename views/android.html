@@ -1,0 +1,485 @@
+
+<header class="strips">
+  <h1><img ng-src="{{getImage('xxhdpi_ic_launcher')}}" height="48" width="48"/>{{meta.app_name.value || meta.app_name.defaultValue || "App Title"}}<small>- {{packageName}}</small>
+    <button ng-click="generate()">Save And Generate</button>
+  </h1>
+</header>
+<section>
+  <form name="androidForm" ng-init="formInit()" id="androidForm">
+    <phone ng-switch="screenToShow" ng-style="" class="android {{screenToShow || 'default'}}">
+      <screen ng-switch-default="ng-switch-default"><img ng-click="show('splash')" ng-src="{{getImage('xxhdpi_ic_launcher')}}" height="70" width="70"/><br/>
+        <label class="app_title">{{meta.app_name.value || meta.app_name.defaultValue || "App Title"}}</label>
+      </screen>
+      <screen ng-switch-when="splash" ng-style="screenCss" ng-click="show('welcome')">
+        <header><img ng-src="{{getImage('xxhdpi_ic_launcher')}}" height="30" width="30"/>
+          <label class="app_title">{{meta.app_name.value || meta.app_name.defaultValue || "App Title"}}</label>
+        </header>
+        <div class="loading">{{meta.splash_loading.value || meta.splash_loading.defaultValue}}</div>
+        <footer>
+          <div ng-click="show()" class="back items"></div>
+          <div ng-click="show()" class="home items"></div>
+        </footer>
+      </screen>
+      <screen ng-switch-when="welcome" ng-style="screenCss">
+        <header><img ng-src="{{getImage('xxhdpi_ic_launcher')}}" height="30" width="30"/>
+          <label class="app_title">{{meta.app_name.value || meta.app_name.defaultValue || "App Title"}}</label><span ng-click="reloadFeed()" data-icon="&#xe000"></span>
+        </header>
+        <div class="wrapper"><img ng-src="{{getImage('xhdpi_top_image')}}" width="100%"/>
+          <div ng-style="frameCss" ng-bind-html-unsafe="meta.feed_description.value || meta.feed_description.defaultValue | noHTML | newlines" class="frame"></div>
+          <button ng-click="show('article')">{{meta.start_reading.value || meta.start_reading.defaultValue}}</button>
+        </div>
+        <footer>
+          <div ng-click="show('splash')" class="back items"></div>
+          <div ng-click="show()" class="home items"></div>
+        </footer>
+      </screen>
+      <screen ng-switch-when="article" ng-style="screenCss">
+        <header><img ng-src="{{getImage('xxhdpi_ic_launcher')}}" height="30" width="30"/>
+          <label class="app_title">{{meta.app_name.value || meta.app_name.defaultValue || "App Title"}}</label><span ng-click="reloadFeed()" data-icon="&#xe000"></span>
+          <span ng-click="reloadFeed()" data-icon="&#xe001"></span>
+        </header>
+        <div ng-controller="NewsCtrl" class="wrapper">
+          <div ng-style="frameCss" ui-if="!feed" ng-bind-html-unsafe="meta.no_unread_items.value || meta.no_unread_items.defaultValue" class="frame">
+            {{rss.data.data.responseData | json}}
+          </div>
+          <div ng-style="frameCss" ui-if="feed" class="frame entries reset">
+            <ul class="reset">
+              <li ng-click="show('post')" ng-repeat="entrie in feed.data.responseData.feed.entries" class="clearfix"><img ng-src="{{getImage('xxhdpi_ic_item_new')}}" height="50" width="50"/><span>{{entrie.title | limitTo:52}}</span><br/><span>{{entrie.publishedDate | simpleDateFormat : meta.app_date_format.value || meta.app_date_format.defaultValue}}</span></li>
+            </ul>
+          </div>
+        </div>
+        <footer>
+          <div ng-click="show('welcome')" class="back items"></div>
+          <div ng-click="show()" class="home items"></div>
+        </footer>
+      </screen>
+      <screen ng-switch-when="post" ng-style="screenCss">
+        <header><img ng-src="{{getImage('xxhdpi_ic_launcher')}}" height="30" width="30"/>
+          <label class="app_title">{{meta.app_name.value || meta.app_name.defaultValue || "App Title"}}</label><span ng-click="reloadFeed()" data-icon="&#xe000"></span>
+        </header>
+        <div ng-controller="NewsCtrl" class="wrapper">
+          <div ng-style="frameCss" class="frame">
+            <h4>What is Lorem Ipsum?</h4>
+            <p>{{1352117003000 | simpleDateFormat : meta.app_date_format.value || meta.app_date_format.defaultValue}}</p><b>Lorem Ipsum</b> is simply dummy text of the printing and typesetting industry Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br/><br/><a>{{meta.read_more.value || meta.read_more.defaultValue}}</a>
+          </div>
+        </div>
+        <footer>
+          <div ng-click="show('article')" class="back items"></div>
+          <div ng-click="show()" class="home items"></div>
+        </footer>
+      </screen>
+    </phone>
+    <div id="fields">
+      <tabs><a type="button" ng-model="filter" btn-radio="'color'" class="btn btn-primary">Color</a><a type="button" ng-model="filter" btn-radio="'image'" class="btn btn-primary">Images</a><a type="button" ng-model="filter" btn-radio="'text'" class="btn btn-primary">Text</a><a type="button" ng-model="filter" btn-radio="'option'" class="btn btn-primary">options</a></tabs>
+      <div ui-if="filter == 'color'">
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.border.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input ui-spectrum="ui-spectrum" name="border" ng-change="reCss()" ng-model="meta.border.value" placeholder="{{meta.border.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.background.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input ui-spectrum="ui-spectrum" name="background" ng-change="reCss()" ng-model="meta.background.value" placeholder="{{meta.background.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.list_background.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input ui-spectrum="ui-spectrum" name="list_background" ng-change="reCss()" ng-model="meta.list_background.value" placeholder="{{meta.list_background.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.text.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input ui-spectrum="ui-spectrum" name="text" ng-change="reCss()" ng-model="meta.text.value" placeholder="{{meta.text.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.button_text.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input ui-spectrum="ui-spectrum" name="button_text" ng-change="reCss()" ng-model="meta.button_text.value" placeholder="{{meta.button_text.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.actionbar_background.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input ui-spectrum="ui-spectrum" name="actionbar_background" ng-change="reCss()" ng-model="meta.actionbar_background.value" placeholder="{{meta.actionbar_background.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.actionbar_border.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input ui-spectrum="ui-spectrum" name="actionbar_border" ng-change="reCss()" ng-model="meta.actionbar_border.value" placeholder="{{meta.actionbar_border.defaultValue}}"/>
+          </div>
+        </section>
+      </div>
+      <div ui-if="filter == 'image'">
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.xxhdpi_ic_item_new.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <label for="xxhdpi_ic_item_new" ng-click="selectImage($event, 'xxhdpi_ic_item_new')">select image</label>
+            <input name="xxhdpi_ic_item_new" id="xxhdpi_ic_item_new" type="file" hidden ng-change="readImage('xxhdpi_ic_item_new')" ng-model="meta.xxhdpi_ic_item_new.file" accept="image/png"/><img ng-src="{{getImage('xxhdpi_ic_item_new')}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.xxhdpi_ic_item_read.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <label for="xxhdpi_ic_item_read" ng-click="selectImage($event, 'xxhdpi_ic_item_read')">select image</label>
+            <input name="xxhdpi_ic_item_read" id="xxhdpi_ic_item_read" type="file" hidden ng-change="readImage('xxhdpi_ic_item_read')" ng-model="meta.xxhdpi_ic_item_read.file" accept="image/png"/><img ng-src="{{getImage('xxhdpi_ic_item_read')}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.xxhdpi_ic_launcher.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <label for="xxhdpi_ic_launcher" ng-click="selectImage($event, 'xxhdpi_ic_launcher')">select image</label>
+            <input name="xxhdpi_ic_launcher" id="xxhdpi_ic_launcher" type="file" hidden ng-change="readImage('xxhdpi_ic_launcher')" ng-model="meta.xxhdpi_ic_launcher.file" accept="image/png"/><img ng-src="{{getImage('xxhdpi_ic_launcher')}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.xxhdpi_ic_notification.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <label for="xxhdpi_ic_notification" ng-click="selectImage($event, 'xxhdpi_ic_notification')">select image</label>
+            <input name="xxhdpi_ic_notification" id="xxhdpi_ic_notification" type="file" hidden ng-change="readImage('xxhdpi_ic_notification')" ng-model="meta.xxhdpi_ic_notification.file" accept="image/png"/><img ng-src="{{getImage('xxhdpi_ic_notification')}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.xxhdpi_mybtn_focus.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <label for="xxhdpi_mybtn_focus" ng-click="selectImage($event, 'xxhdpi_mybtn_focus')">select image</label>
+            <input name="xxhdpi_mybtn_focus" id="xxhdpi_mybtn_focus" type="file" hidden ng-change="readImage('xxhdpi_mybtn_focus')" ng-model="meta.xxhdpi_mybtn_focus.file" accept="image/png"/><img ng-src="{{getImage('xxhdpi_mybtn_focus')}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.xxhdpi_mybtn_normal.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <label for="xxhdpi_mybtn_normal" ng-click="selectImage($event, 'xxhdpi_mybtn_normal')">select image</label>
+            <input name="xxhdpi_mybtn_normal" id="xxhdpi_mybtn_normal" type="file" hidden ng-change="readImage('xxhdpi_mybtn_normal')" ng-model="meta.xxhdpi_mybtn_normal.file" accept="image/png"/><img ng-src="{{getImage('xxhdpi_mybtn_normal')}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.xxhdpi_mybtn_pressed.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <label for="xxhdpi_mybtn_pressed" ng-click="selectImage($event, 'xxhdpi_mybtn_pressed')">select image</label>
+            <input name="xxhdpi_mybtn_pressed" id="xxhdpi_mybtn_pressed" type="file" hidden ng-change="readImage('xxhdpi_mybtn_pressed')" ng-model="meta.xxhdpi_mybtn_pressed.file" accept="image/png"/><img ng-src="{{getImage('xxhdpi_mybtn_pressed')}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.xxhdpi_top_image.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <label for="xxhdpi_top_image" ng-click="selectImage($event, 'xxhdpi_top_image')">select image</label>
+            <input name="xxhdpi_top_image" id="xxhdpi_top_image" type="file" hidden ng-change="readImage('xxhdpi_top_image')" ng-model="meta.xxhdpi_top_image.file" accept="image/png"/><img ng-src="{{getImage('xxhdpi_top_image')}}"/>
+          </div>
+        </section>
+      </div>
+      <datalist id="date_format">
+        <option label="11/05/12 1:03PM">MM/dd/yy h:mmaa</option>
+        <option label="Nov 05, 2012 1:03PM">MMM dd, yyyy h:mmaa</option>
+        <option label="November 05, 2012 1:03PM">MMMM dd, yyyy h:mmaa</option>
+        <option label="Mon, November 05, 2012 1:03PM">E, MMMM dd, yyyy h:mmaa</option>
+        <option label="Monday, November 05, 2012 1:03PM">EEEE, MMMM dd, yyyy h:mmaa</option>
+      </datalist>
+      <div ui-if="filter == 'option'">
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.ads_disabled.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input type="checkbox" name="ads_disabled" ng-model="meta.ads_disabled.value" ng-true-value="true" ng-false-value="false" data-off="No" data-on="Yes"/>
+          </div>
+        </section>
+        <div ui-if="meta.ads_disabled.value == 'true'">
+          <section class="grid">
+            <div class="col-1-3">
+              <p>{{meta.creds_ratio.description}}</p>
+            </div>
+            <div class="col-2-3">
+              <input name="creds_ratio" type="range" min="33" max="100" ng-model="meta.creds_ratio.value" placeholder="{{meta.creds_ratio.defaultValue}}"/>{{meta.creds_ratio.value || 33}}/100%
+            </div>
+          </section>
+          <section class="grid">
+            <div class="col-1-3">
+              <p>{{meta.client_admob_code.description}}</p>
+            </div>
+            <div class="col-2-3">
+              <input name="client_admob_code" ng-model="meta.client_admob_code.value" placeholder="{{meta.client_admob_code.defaultValue}}"/>
+            </div>
+          </section>
+        </div>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.view_after_loading.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input type="checkbox" name="view_after_loading" ng-model="meta.view_after_loading.value" ng-true-value="postslist" ng-false-value="welcome" data-off="Posts list" data-on="Welcome screen"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.text_direction.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input type="checkbox" name="text_direction" ng-model="meta.text_direction.value" ng-true-value="rtl" ng-false-value="ltr" data-off="Right to left" data-on="Left to right"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.buildVersion.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="buildVersion" ng-model="meta.buildVersion.value" placeholder="{{meta.buildVersion.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.article_css.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <textarea name="article_css" ng-model="meta.article_css.value" placeholder="{{meta.article_css.defaultValue}}"></textarea>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.article_extra_header.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <textarea name="article_extra_header" ng-model="meta.article_extra_header.value" placeholder="{{meta.article_extra_header.defaultValue}}"></textarea>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.version_name.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="version_name" ng-model="meta.version_name.value" placeholder="{{meta.version_name.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.rss_feeds.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <textarea name="rss_feeds" ng-model="meta.rss_feeds.value" placeholder="{{meta.rss_feeds.defaultValue}}"></textarea>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.rss_feed_objects.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <textarea name="rss_feed_objects" ng-model="meta.rss_feed_objects.value" placeholder="{{meta.rss_feed_objects.defaultValue}}"></textarea>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.app_date_format.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input list="date_format" ng-trim="false" name="app_date_format" ng-model="meta.app_date_format.value" placeholder="{{meta.app_date_format.defaultValue}}"/> {{1352117003000 | simpleDateFormat : meta.app_date_format.value || meta.app_date_format.defaultValue}}
+          </div>
+        </section>
+      </div>
+      <div ui-if="filter == 'text'">
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.app_name.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="app_name" ng-model="meta.app_name.value" placeholder="{{meta.app_name.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.settings.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="settings" ng-model="meta.settings.value" placeholder="{{meta.settings.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.sync_now.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="sync_now" ng-model="meta.sync_now.value" placeholder="{{meta.sync_now.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.reset_database.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="reset_database" ng-model="meta.reset_database.value" placeholder="{{meta.reset_database.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.mark_all_as_read.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="mark_all_as_read" ng-model="meta.mark_all_as_read.value" placeholder="{{meta.mark_all_as_read.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.read_more.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="read_more" ng-model="meta.read_more.value" placeholder="{{meta.read_more.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.share.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="share" ng-model="meta.share.value" placeholder="{{meta.share.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.share_title.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="share_title" ng-model="meta.share_title.value" placeholder="{{meta.share_title.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.share_message.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="share_message" ng-model="meta.share_message.value" placeholder="{{meta.share_message.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.menu_about.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="menu_about" ng-model="meta.menu_about.value" placeholder="{{meta.menu_about.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.about_app_title.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="about_app_title" ng-model="meta.about_app_title.value" placeholder="{{meta.about_app_title.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.about_text.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <textarea name="about_text" ng-model="meta.about_text.value" placeholder="{{meta.about_text.defaultValue}}"></textarea>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.update_dialog.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="update_dialog" ng-model="meta.update_dialog.value" placeholder="{{meta.update_dialog.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.update_ticker.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="update_ticker" ng-model="meta.update_ticker.value" placeholder="{{meta.update_ticker.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.update_context_text.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="update_context_text" ng-model="meta.update_context_text.value" placeholder="{{meta.update_context_text.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.feed_description.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <textarea name="feed_description" ng-model="meta.feed_description.value" placeholder="{{meta.feed_description.defaultValue}}"></textarea>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.start_reading.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="start_reading" ng-model="meta.start_reading.value" placeholder="{{meta.start_reading.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.new_items.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="new_items" ng-model="meta.new_items.value" placeholder="{{meta.new_items.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.no_unread_items.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="no_unread_items" ng-model="meta.no_unread_items.value" placeholder="{{meta.no_unread_items.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.splash_loading.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="splash_loading" ng-model="meta.splash_loading.value" placeholder="{{meta.splash_loading.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.post_icon.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="post_icon" ng-model="meta.post_icon.value" placeholder="{{meta.post_icon.defaultValue}}"/>
+          </div>
+        </section>
+      </div>
+    </div>
+  </form>
+</section>

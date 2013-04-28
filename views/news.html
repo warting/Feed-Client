@@ -1,0 +1,8 @@
+
+<header class="strips">
+	<h1>News</h1>
+</header>
+<article ng-repeat="entrie in feed.data.responseData.feed.entries">
+	<h2>{{entrie.title}}</h2>
+	<div ng-bind-html-unsafe="entrie.content"></div>
+</article>

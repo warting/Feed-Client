@@ -1,0 +1,28 @@
+
+<header class="strips">
+  <h1>All applications!
+    <button ng-click="createApp()">+ Create new app</button>
+  </h1>
+</header>
+<table>
+  <thead>
+    <tr>
+      <th>Package name</th>
+      <th>Latest beta</th>
+      <th>Last update</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="app in apps">
+      <td><strong><a ng-href="/android/{{app.packageName}}">{{app.packageName}}</a></strong>
+        <div class="action"><a ng-click="generate(app.packageName)">Generate</a><a ng-click="push(app.packageName)">Push</a><a ng-click="removeApp(app.packageName)" class="danger">Delete</a><a ui-if="app.betaVersion" ng-click="publish(app.packageName)">Publish</a></div>
+      </td>
+      <td ui-if="app.betaVersion"><a target="_self" href="http://api.feed.nu/api/file/{{app.betaVersion.blobKey}}/content/">{{app.betaVersion.versionName}}</a> ({{app.betaVersion.buildNumber}})</td>
+      <td ui-if="!app.betaVersion">---</td>
+      <td></td>
+      <td ui-if="app.releaseVersion"><a target="_self" href="http://api.feed.nu/api/file/{{app.releaseVersion.blobKey}}/content/">{{app.releaseVersion.versionName}}</a> ({{app.releaseVersion.buildNumber}})</td>
+      <td ui-if="!app.releaseVersion">Unpublish</td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,10 @@
+
+<header class="strips">
+  <h1>Settings</h1>
+</header>
+<p>Login with you api token found at <a href="http://api.feed.nu/" target="_blank">http://api.feed.nu/</a></p>
+<form>
+  <input name="input" ng-model="userToken" ng-pattern="/[a-fA-F0-9]{32}/"/>
+  <input type="submit" value="Login" ng-click="Login(userToken)"/>
+</form><br/>
+<p ui-if="loggedIn">you are logged in with token: {{ActiveUserToken}}</p>
