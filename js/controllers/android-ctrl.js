@@ -1,5 +1,5 @@
 /* global app, angular, webkitURL */
-app.controller("AndroidCtrl", ["$scope", "$routeParams", "Mashape", "$filter", function($scope, $routeParams, Mashape, $filter) {
+app.controller("AndroidCtrl", ["$scope", "$routeParams", "Mashape", "$filter", "$cacheFactory", function($scope, $routeParams, Mashape, $filter, $cacheFactory) {
 
 	$scope.meta = {
 		buildVersion: {
@@ -91,6 +91,7 @@ app.controller("AndroidCtrl", ["$scope", "$routeParams", "Mashape", "$filter", f
 	// Generate a application and notifiy the user
 	$scope.generate = function() {
 		saveMeta(function() {
+			$cacheFactory.get("$http").remove("https://feed.p.mashape.com/android/" + $scope.packageName + "/");
 			Mashape.generateAndroidApp({packageName : $scope.packageName}, function() {
 				alert("The build process has begun. It takes about 1 minute. You will receive a E-mail when it's done!");
 			});
