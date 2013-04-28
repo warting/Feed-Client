@@ -91,7 +91,7 @@ app.controller("AndroidCtrl", ["$scope", "$routeParams", "Mashape", "$filter", f
 	// Generate a application and notifiy the user
 	$scope.generate = function() {
 		saveMeta(function() {
-			Mashape.createAndroidApp({packageName : $scope.packageName}, function() {
+			Mashape.generateAndroidApp({packageName : $scope.packageName}, function() {
 				alert("The build process has begun. It takes about 1 minute. You will receive a E-mail when it's done!");
 			});
 		});
