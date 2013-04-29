@@ -143,10 +143,6 @@ app.controller("ApplicationsCtrl", ["$scope", "$filter", "Mashape", "$cacheFacto
 	        if(warn) alert('first character in packageName cannot be numeric');
 	    	return false;
 	    }
-	    if($scope.isNumber(lastChar)) {
-	        if(warn) alert('last character in packageName cannot be numeric');
-	    	return false;
-	    }
 
 	    if(firstChar == '.') {
 	        if(warn) alert('packageName cannot start with a . (dot)');
