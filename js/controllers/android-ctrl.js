@@ -15,7 +15,7 @@ app.controller("AndroidCtrl", ["$scope", "$routeParams", "Mashape", "$filter", "
 		$scope.filter = "color";
 	});
 
-	Mashape.getAvailibleMetaSettings('', function(res) {
+	Mashape.getAvailableMetaSettings('', function(res) {
 		angular.extend(true, $scope.meta, $filter("map")(res));
 		$scope.reCss();
 	});
