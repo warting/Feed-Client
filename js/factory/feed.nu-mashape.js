@@ -48,7 +48,7 @@ app.factory('Mashape', ["$resource", "$cacheFactory", "$http", "$rootScope", fun
 
 		getAndroidApps: mash("android").storeArray,
 
-		getAvailibleMetaSettings: mash("android/meta/availibleSettings").storeArray,
+		getAvailableMetaSettings: mash("android/meta/availableSettings").storeArray,
 
 		// getFileInfo: angular.noop,
 
