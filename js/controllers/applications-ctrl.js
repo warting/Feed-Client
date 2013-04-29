@@ -40,7 +40,12 @@ app.controller("ApplicationsCtrl", ["$scope", "$filter", "Mashape", "$cacheFacto
 	};
 
 	$scope.createApp = function() {
-		var packageName = prompt("What package name do you want?\nOnly use: [A-Z] [a-z] _ .", defaultPackageName || "");
+		var packageName = prompt("What package name do you want?\nOnly use: [a-z] _ .", defaultPackageName || "");
+
+		if($scope.validatePackageName(packageName, true) == false) {
+			$scope.createApp();
+			return;
+		}
 
 		if(packageName){
 			Mashape.createAndroidApp({packageName: packageName}, function(res) {
@@ -55,6 +60,60 @@ app.controller("ApplicationsCtrl", ["$scope", "$filter", "Mashape", "$cacheFacto
 				});
 			});
 		}
+	};
+
+	$scope.validatePackageName = function(packageName, warn) {
+	    if(packageName.length < 3) {
+	       if(warn) alert('to short!');
+	       return false;
+	    }
+	    
+	    if(packageName.indexOf(".") == -1) {
+	        if(warn) alert('must contain at least one . (dot)');
+	        return false;
+	    }
+	    
+	    if(packageName.indexOf("..") !== -1) {
+	        if(warn) alert('must not contain two . in a row');
+	        return false;
+	    }
+	    
+	    
+	    if(packageName.indexOf("_.") !== -1) {
+	        if(warn) alert('must not contain _.');
+	        return false;
+	    }
+	    
+	    if(packageName.indexOf("._") !== -1) {
+	        if(warn) alert('must not contain ._');
+	        return false;
+	    }
+	    
+	    if(/^[a-z._]*$/.test(packageName) == false) {
+	        if(warn) alert('packagename contains invalid character, valid characters is: a-z . _');
+	        return false;
+	    }
+	    
+	    var firstChar = packageName.charAt(0);
+	    var lastChar = packageName.charAt(packageName.length-1);
+	    if(firstChar == '.') {
+	        if(warn) alert('packageName cannot start with a . (dot)');
+	        return false;
+	    }
+	    if(firstChar == '_') {
+	        if(warn) alert('packageName cannot start with a _ (underscore)');
+	        return false;
+	    }
+	    if(lastChar == '.') {
+	        if(warn) alert('packageName cannot end with a . (dot)');
+	        return false;
+	    }
+	    if(lastChar == '_') {
+	        if(warn) alert('packageName cannot end with a _ (underscore)');
+	        return false;
+	    }
+	    
+	    return true; // valid
 	};
 
 }]);
