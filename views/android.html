@@ -353,6 +353,22 @@
         </section>
         <section class="grid">
           <div class="col-1-3">
+            <p>{{meta.hide_read.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="hide_read" ng-model="meta.hide_read.value" placeholder="{{meta.hide_read.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.hide_read_summary.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="hide_read_summary" ng-model="meta.hide_read_summary.value" placeholder="{{meta.hide_read_summary.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
             <p>{{meta.read_more.description}}</p>
           </div>
           <div class="col-2-3">
