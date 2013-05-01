@@ -495,7 +495,22 @@
             <input name="post_icon" ng-model="meta.post_icon.value" placeholder="{{meta.post_icon.defaultValue}}"/>
           </div>
         </section>
-        
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.update_interval_title.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="update_interval_title" ng-model="meta.update_interval_title.value" placeholder="{{meta.update_interval_title.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.update_interval_summary.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="update_interval_summary" ng-model="meta.update_interval_summary.value" placeholder="{{meta.update_interval_summary.defaultValue}}"/>
+          </div>
+        </section>
         <section class="grid">
           <div class="col-1-3">
             <p>{{meta.every_30_minute.description}}</p>
