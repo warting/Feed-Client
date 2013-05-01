@@ -202,6 +202,27 @@
             <input name="xxhdpi_top_image" id="xxhdpi_top_image" type="file" hidden ng-change="readImage('xxhdpi_top_image')" ng-model="meta.xxhdpi_top_image.file" accept="image/png"/><img ng-src="{{getImage('xxhdpi_top_image')}}"/>
           </div>
         </section>
+
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.xxhdpi_top_image_postlist.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <label for="xxhdpi_top_image_postlist" ng-click="selectImage($event, 'xxhdpi_top_image_postlist')">select image</label>
+            <input name="xxhdpi_top_image_postlist" id="xxhdpi_top_image_postlist" type="file" hidden ng-change="readImage('xxhdpi_top_image_postlist')" ng-model="meta.xxhdpi_top_image_postlist.file" accept="image/png"/><img ng-src="{{getImage('xxhdpi_top_image_postlist')}}"/>
+          </div>
+        </section>
+
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.xxhdpi_top_image_article.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <label for="xxhdpi_top_image_article" ng-click="selectImage($event, 'xxhdpi_top_image_article')">select image</label>
+            <input name="xxhdpi_top_image_article" id="xxhdpi_top_image_article" type="file" hidden ng-change="readImage('xxhdpi_top_image_article')" ng-model="meta.xxhdpi_top_image_article.file" accept="image/png"/><img ng-src="{{getImage('xxhdpi_top_image_article')}}"/>
+          </div>
+        </section>
+
       </div>
       <datalist id="date_format">
         <option label="11/05/12 1:03PM">MM/dd/yy h:mmaa</option>
