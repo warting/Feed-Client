@@ -495,6 +495,39 @@
             <input name="post_icon" ng-model="meta.post_icon.value" placeholder="{{meta.post_icon.defaultValue}}"/>
           </div>
         </section>
+        
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.every_30_minute.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="every_30_minute" ng-model="meta.every_30_minute.value" placeholder="{{meta.every_30_minute.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.every_hour.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="every_hour" ng-model="meta.every_hour.value" placeholder="{{meta.every_hour.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.every_half_day.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="every_half_day" ng-model="meta.every_half_day.value" placeholder="{{meta.every_half_day.defaultValue}}"/>
+          </div>
+        </section>
+        <section class="grid">
+          <div class="col-1-3">
+            <p>{{meta.every_day.description}}</p>
+          </div>
+          <div class="col-2-3">
+            <input name="every_day" ng-model="meta.every_day.value" placeholder="{{meta.every_day.defaultValue}}"/>
+          </div>
+        </section>
       </div>
     </div>
   </form>
