@@ -19,11 +19,17 @@ app.controller("MainCtrl", ["$rootScope", "$location", "$http", function($rootSc
 	};
 
 	$rootScope.Login = function(token) {
-		$rootScope.ActiveUserToken = localStorage.token = token;
-		$rootScope.loggedIn = true;
+		if(token) {
+			$rootScope.ActiveUserToken = localStorage.token = token;
+			$rootScope.loggedIn = true;
 
-		window.loginCallback && parentSource &&
-		parentSource.postMessage({action: loginCallback, args: []}, parentOrigin);
+			window.loginCallback && parentSource &&
+			parentSource.postMessage({action: loginCallback, args: []}, parentOrigin);
+		}
+		else {
+			alert('Please enter your full token from http://api.feed.nu/');			
+		}
+
 	};
 
 }]);
