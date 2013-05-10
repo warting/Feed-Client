@@ -10,14 +10,15 @@ app.controller("AndroidCtrl", ["$scope", "$routeParams", "Mashape", "$filter", "
 
 	$scope.packageName = $routeParams.packageName;
 
-	Mashape.getAndroidApp({packageName: $routeParams.packageName}, function(res) {
-		angular.extend(true, $scope.meta, $filter("map")(res.androidMeta));
-		$scope.filter = "color";
-	});
+
 
 	Mashape.getAvailableMetaSettings('', function(res) {
 		angular.extend(true, $scope.meta, $filter("map")(res));
 		$scope.reCss();
+		Mashape.getAndroidApp({packageName: $routeParams.packageName}, function(res) {
+			angular.extend(true, $scope.meta, $filter("map")(res.androidMeta));
+			$scope.filter = "color";
+		});
 	});
 
 	$scope.reCss = function() {
