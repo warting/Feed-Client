@@ -4,7 +4,7 @@ app.controller("MainCtrl", ["$rootScope", "$location", "$http", function($rootSc
 	$rootScope.ActiveUserToken = localStorage.token;
 	$rootScope.loggedIn = !!localStorage.token;
 
-	$rootScope.isLoading = function() {
+	$rootScope.loading = function() {
 		return !!$http.pendingRequests.length;
 	};
 
@@ -29,7 +29,6 @@ app.controller("MainCtrl", ["$rootScope", "$location", "$http", function($rootSc
 		else {
 			alert('Please enter your full token from http://api.feed.nu/');			
 		}
-
 	};
 
 }]);

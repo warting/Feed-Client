@@ -16,13 +16,13 @@
   <tbody>
     <tr ng-repeat="app in apps">
       <td><strong><a ng-href="/android/{{app.packageName}}">{{app.packageName}}</a></strong>
-        <div class="action"><a ng-click="generate(app.packageName)">Generate</a><a ng-click="push(app.packageName)">Push</a><a ng-click="removeApp(app.packageName)" class="danger">Delete</a><a ui-if="app.betaVersion" ng-click="publish(app.packageName)">Publish</a></div>
+        <div class="action"><a ng-click="generate(app.packageName)">Generate</a><a ng-click="push(app.packageName)">Push</a><a ng-click="removeApp(app.packageName)" class="danger">Delete</a><a ng-if="app.betaVersion" ng-click="publish(app.packageName)">Publish</a></div>
       </td>
-      <td ui-if="app.betaVersion"><a target="_self" href="http://api.feed.nu/api/file/{{app.betaVersion.blobKey}}/content/">{{app.betaVersion.versionName}}</a> ({{app.betaVersion.buildNumber}})</td>
-      <td ui-if="!app.betaVersion">---</td>
+      <td ng-if="app.betaVersion"><a target="_self" href="http://api.feed.nu/api/file/{{app.betaVersion.blobKey}}/content/">{{app.betaVersion.versionName}}</a> ({{app.betaVersion.buildNumber}})</td>
+      <td ng-if="!app.betaVersion">---</td>
       <td></td>
-      <td ui-if="app.releaseVersion"><a target="_self" href="http://api.feed.nu/api/file/{{app.releaseVersion.blobKey}}/content/">{{app.releaseVersion.versionName}}</a> ({{app.releaseVersion.buildNumber}})</td>
-      <td ui-if="!app.releaseVersion">Unpublish</td>
+      <td ng-if="app.releaseVersion"><a target="_self" href="http://api.feed.nu/api/file/{{app.releaseVersion.blobKey}}/content/">{{app.releaseVersion.versionName}}</a> ({{app.releaseVersion.buildNumber}})</td>
+      <td ng-if="!app.releaseVersion">Unpublish</td>
     </tr>
   </tbody>
 </table>

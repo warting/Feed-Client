@@ -7,6 +7,6 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 		.when('/applications', { templateUrl: '/views/applications.html', controller: 'ApplicationsCtrl'})
 		.when('/settings', { templateUrl: '/views/settings.html', controller: 'SettingsCtrl'})
 		.when('/android/:packageName', { templateUrl: '/views/android.html', controller: 'AndroidCtrl'})
-		.when('/login', { templateUrl: '/views/login.html'});
+		.when('/login', { templateUrl: '/views/login.html', controller: 'LoginCtrl' });
 
 }]);

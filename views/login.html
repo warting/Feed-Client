@@ -7,4 +7,4 @@
   <input name="input" ng-model="userToken" ng-pattern="/[a-fA-F0-9]{32}/"/>
   <input type="submit" value="Login" ng-click="Login(userToken)"/>
 </form><br/>
-<p ui-if="loggedIn">you are logged in with token: {{ActiveUserToken}}</p>
+<p ng-if="loggedIn">you are logged in with token: {{ActiveUserToken}}</p>
